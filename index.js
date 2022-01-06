@@ -1,4 +1,7 @@
 let myLibrary = [];
+let rowNumber = 1;
+
+const rows = document.querySelectorAll('.row');
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -17,8 +20,20 @@ function addBookToLibrary(title, author, pages, read) {
 
 function displayBooks() {
   for (let i = 0; i < myLibrary.length; i++) {
-
+    for (let j = 1; j < rows.length; j++) {
+      console.log(rows[j].childNodes.length - countTextNodes(rows[j].childNodes))
+    }
   }
+}
+
+function countTextNodes(nodeList) {
+  let count = 0;
+  for (let i = 0; i < nodeList.length; i++) {
+    if (nodeList[i].nodeType == 3) {
+      count++;
+    }
+  }
+  return count;
 }
 
 function card(book) {
@@ -54,8 +69,8 @@ function card(book) {
   return div;
 }
 
-const container = document.querySelector('.container');
-
 const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false);
 
 myLibrary.push(theHobbit);
+
+displayBooks();
