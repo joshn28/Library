@@ -2,6 +2,7 @@ let myLibrary = [];
 let rowNumber = 1;
 
 const rows = document.querySelectorAll('.row');
+const container = document.querySelector('.container');
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -20,8 +21,17 @@ function addBookToLibrary(title, author, pages, read) {
 
 function displayBooks() {
   for (let i = 0; i < myLibrary.length; i++) {
-    for (let j = 1; j < rows.length; j++) {
-      console.log(rows[j].childNodes.length - countTextNodes(rows[j].childNodes))
+    for (; rowNumber < rows.length; rowNumber++) {
+      if (rows[rowNumber].childNodes.length - countTextNodes(rows[rowNumber].childNodes) < 3) {
+        rows[rowNumber].append(card(myLibrary[i]));
+        break;
+      } else {
+        const row = document.createElement('div');
+        row.classList.add('row', 'top-buffer');
+        row.append(card(myLibrary[i]));
+        container.append(row);
+        break;
+      }
     }
   }
 }
