@@ -3,7 +3,6 @@ let rowNumber = 1;
 
 const rows = document.querySelectorAll('.row');
 const container = document.querySelector('.container');
-const pages = document.querySelector('#pages');
 
 function onlyNumbers(e) {
   switch (e.key) {
@@ -38,9 +37,14 @@ function Book(title, author, pages, read) {
   }
 }
 
-function addBookToLibrary(title, author, pages, read) {
+function addBookToLibrary() {
+  const title = document.querySelector('#book-title').value;
+  const author = document.querySelector('#author').value;
+  const pages = document.querySelector('#pages').value;
+  const read = document.querySelector('#read-check').checked;
   const newBook = new Book(title, author, pages, read);
   myLibrary.push(newBook);
+  displayBooks();
 }
 
 function displayBooks() {
@@ -102,9 +106,3 @@ function card(book) {
 
   return div;
 }
-
-const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false);
-
-myLibrary.push(theHobbit);
-
-displayBooks();
