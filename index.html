@@ -11,41 +11,13 @@
 </head>
 <body>
     <h1>Library</h1>
-    <div class="container">
+    <div class="container" id=library>
         <div class="row">
             <div class="col-sm-12 text-right">
                 <button type="button" class="btn btn-primary" id="add-book" data-bs-toggle="modal" data-bs-target="#modal">New Book</button>
             </div>
         </div>
-        <div class="row top-buffer">
-            <div class="col-sm-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Book Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Author</h6>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Book Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Author</h6>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Book Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Author</h6>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  </div>
-                </div>
-            </div>
-        </div>
+        <div class="row top-buffer"></div>
     </div>
 
     <!-- Modal -->
@@ -59,15 +31,15 @@
             <form>
               <div class="mb-3">
                 <label for="book-title" class="form-label">Book Title</label>
-                <input type="text" class="form-control" id="book-title">
+                <input type="text" class="form-control" id="book-title" required>
               </div>
               <div class="mb-3">
                 <label for="author" class="form-label">Author</label>
-                <input type="text" class="form-control" id="author">
+                <input type="text" class="form-control" id="author" required>
               </div>
               <div class="mb-3">
                 <label for="pages" class="form-label">Number of Pages</label>
-                <input type="number" min="1" class="form-control" id="pages" onkeypress="return onlyNumbers(event)">
+                <input type="number" min="1" class="form-control" id="pages" onkeypress="return onlyNumbers(event)" required>
               </div>
               <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="read-check">
@@ -77,7 +49,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addBookToLibrary()">Add</button>
           </div>
         </div>
       </div>
