@@ -3,6 +3,30 @@ let rowNumber = 1;
 
 const rows = document.querySelectorAll('.row');
 const container = document.querySelector('.container');
+const pages = document.querySelector('#pages');
+
+function onlyNumbers(e) {
+  switch (e.key) {
+    case "0":
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+      if (e.target.value === "0" && e.key === "0") {
+        return false;
+      } else if (e.target.value === "0" && e.key !== "0") {
+        e.target.value = "";
+      }
+      return true;
+    default:
+      return false;
+  }
+}
 
 function Book(title, author, pages, read) {
   this.title = title;
