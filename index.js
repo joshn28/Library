@@ -1,7 +1,8 @@
 let myLibrary = [];
 let rowNumber = 1;
+let i = 0
 
-const rows = document.querySelectorAll('.row');
+let rows = document.querySelectorAll('.row');
 const container = document.querySelector('.container');
 
 function onlyNumbers(e) {
@@ -48,16 +49,18 @@ function addBookToLibrary() {
 }
 
 function displayBooks() {
-  for (let i = 0; i < myLibrary.length; i++) {
-    for (; rowNumber < rows.length; rowNumber++) {
+  for (; i < myLibrary.length; i++) {
+    for (; rowNumber < rows.length; ) {
       if (rows[rowNumber].childNodes.length - countTextNodes(rows[rowNumber].childNodes) < 3) {
         rows[rowNumber].append(card(myLibrary[i]));
         break;
       } else {
+        rowNumber++;
         const row = document.createElement('div');
         row.classList.add('row', 'top-buffer');
         row.append(card(myLibrary[i]));
         container.append(row);
+        rows = document.querySelectorAll('.row');
         break;
       }
     }
