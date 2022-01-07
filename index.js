@@ -39,11 +39,15 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-  const title = document.querySelector('#book-title').value;
-  const author = document.querySelector('#author').value;
-  const pages = document.querySelector('#pages').value;
-  const read = document.querySelector('#read-check').checked;
-  const newBook = new Book(title, author, pages, read);
+  const title = document.querySelector('#book-title');
+  const author = document.querySelector('#author');
+  const pages = document.querySelector('#pages');
+  const read = document.querySelector('#read-check');
+  const newBook = new Book(title.value, author.value, pages.value, read.checked);
+  title.value = "";
+  author.value = "";
+  pages.value = "";
+  read.checked = false;
   myLibrary.push(newBook);
   displayBooks();
 }
