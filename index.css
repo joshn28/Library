@@ -8,6 +8,14 @@
 
 h1 {
     text-align: center;
-    margin-top: 50px;
+    margin: 50px 0;
     font-size: 50px;
+}
+
+.top-buffer {
+    margin-top: 20px;
+}
+
+#library {
+    margin-bottom: 20px;
 }
