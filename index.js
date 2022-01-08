@@ -1,6 +1,6 @@
 let myLibrary = [];
 let rowNumber = 1;
-let i = 0
+let bookIndex;
 
 let rows = document.querySelectorAll('.row');
 const container = document.querySelector('.container');
@@ -53,7 +53,12 @@ function addBookToLibrary() {
 }
 
 function displayBooks() {
-  for (; i < myLibrary.length; i++) {
+  const allRows = document.querySelector('.top-buffer');
+  while (allRows.firstChild) {
+    allRows.removeChild(allRows.firstChild);
+  }
+  bookIndex = 1;
+  for (let i = 0; i < myLibrary.length; i++) {
     for (; rowNumber < rows.length; ) {
       if (rows[rowNumber].childNodes.length - countTextNodes(rows[rowNumber].childNodes) < 3) {
         rows[rowNumber].append(card(myLibrary[i]));
@@ -103,13 +108,30 @@ function card(book) {
   info.classList.add('card-text');
   info.textContent = book.info();
 
+  const btnDiv = document.createElement('div');
+  btnDiv.classList.add('text-right');
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.classList.add('btn', 'btn-danger');
+  deleteBtn.setAttribute('data-index', bookIndex);
+  deleteBtn.textContent = "Delete";
+  deleteBtn.addEventListener('click', (e) => {
+    myLibrary.splice(e.currentTarget.dataset.index-1, 1);
+    displayBooks();
+  })
+
+  btnDiv.append(deleteBtn)
+
   cardBody.append(title);
   cardBody.append(author);
   cardBody.append(info);
+  cardBody.append(btnDiv);
 
   card.append(cardBody);
 
   div.append(card);
+
+  bookIndex++;
 
   return div;
 }
