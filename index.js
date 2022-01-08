@@ -1,8 +1,9 @@
 let myLibrary = [];
-let rowNumber = 1;
-let bookIndex;
+let rowNumber = 0;
+let bookIndex = 1;
+let i = 0
 
-let rows = document.querySelectorAll('.row');
+let rows = document.querySelectorAll('.top-buffer');
 const container = document.querySelector('.container');
 
 function onlyNumbers(e) {
@@ -53,12 +54,7 @@ function addBookToLibrary() {
 }
 
 function displayBooks() {
-  const allRows = document.querySelector('.top-buffer');
-  while (allRows.firstChild) {
-    allRows.removeChild(allRows.firstChild);
-  }
-  bookIndex = 1;
-  for (let i = 0; i < myLibrary.length; i++) {
+  for (; i < myLibrary.length; i++) {
     for (; rowNumber < rows.length; ) {
       if (rows[rowNumber].childNodes.length - countTextNodes(rows[rowNumber].childNodes) < 3) {
         rows[rowNumber].append(card(myLibrary[i]));
@@ -69,7 +65,7 @@ function displayBooks() {
         row.classList.add('row', 'top-buffer');
         row.append(card(myLibrary[i]));
         container.append(row);
-        rows = document.querySelectorAll('.row');
+        rows = document.querySelectorAll('.top-buffer');
         break;
       }
     }
@@ -88,6 +84,7 @@ function countTextNodes(nodeList) {
 
 function card(book) {
   const div = document.createElement('div');
+  div.setAttribute('data-index', bookIndex);
   div.classList.add('col-sm-4');
 
   const card = document.createElement('div');
@@ -117,6 +114,21 @@ function card(book) {
   deleteBtn.textContent = "Delete";
   deleteBtn.addEventListener('click', (e) => {
     myLibrary.splice(e.currentTarget.dataset.index-1, 1);
+    const book = document.querySelector(`div[data-index="${e.currentTarget.dataset.index}"]`);
+    book.parentNode.removeChild(book);
+    
+    for (let book of rows) {
+      book.parentNode.removeChild(book);
+    }
+
+    i = 0;
+    rowNumber = 0;
+    bookIndex = 1;
+
+    const div = document.createElement('div');
+    div.classList.add('row', 'top-buffer');
+    container.append(div);
+    rows = document.querySelectorAll('.top-buffer');
     displayBooks();
   })
 
