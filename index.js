@@ -39,6 +39,10 @@ function Book(title, author, pages, read) {
   }
 }
 
+Book.prototype.changeReadStatus = function() {
+  this.read = !this.read;
+}
+
 function addBookToLibrary() {
   const title = document.querySelector('#book-title');
   const author = document.querySelector('#author');
@@ -103,10 +107,35 @@ function card(book) {
 
   const info = document.createElement('p');
   info.classList.add('card-text');
+  info.setAttribute('data-index', bookIndex);
   info.textContent = book.info();
 
   const btnDiv = document.createElement('div');
   btnDiv.classList.add('text-right');
+
+  const infoBtn = document.createElement('button');
+  infoBtn.classList.add('btn', 'mr-2');
+  if (book.read == "not read yet") {
+    infoBtn.classList.add('btn-success');
+  } else {
+    infoBtn.classList.add('btn-secondary');
+  }
+  infoBtn.setAttribute('data-index', bookIndex);
+  infoBtn.textContent = book.read == "not read yet" ? "Change to read" : "Change to not read";
+  infoBtn.addEventListener('click', (e) => {
+    const bookInfo = document.querySelector(`p[data-index="${e.currentTarget.dataset.index}"]`);
+    if (e.currentTarget.textContent == "Change to not read") {
+      bookInfo.textContent = bookInfo.textContent.replace('read', 'not read yet');
+      e.currentTarget.classList.remove('btn-secondary');
+      e.currentTarget.classList.add('btn-success');
+      e.currentTarget.textContent = "Change to read";
+    } else {
+      bookInfo.textContent = bookInfo.textContent.replace('not read yet', 'read');
+      e.currentTarget.classList.remove('btn-success');
+      e.currentTarget.classList.add('btn-secondary');
+      e.currentTarget.textContent = "Change to not read";
+    }
+  });
 
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('btn', 'btn-danger');
@@ -130,9 +159,10 @@ function card(book) {
     container.append(div);
     rows = document.querySelectorAll('.top-buffer');
     displayBooks();
-  })
+  });
 
-  btnDiv.append(deleteBtn)
+  btnDiv.append(infoBtn);
+  btnDiv.append(deleteBtn);
 
   cardBody.append(title);
   cardBody.append(author);
