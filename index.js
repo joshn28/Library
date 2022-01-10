@@ -117,7 +117,7 @@ function countTextNodes(nodeList) {
 function card(book) {
   const div = document.createElement('div');
   div.setAttribute('data-index', bookIndex);
-  div.classList.add('col-sm-4');
+  div.classList.add('col-sm-12', 'col-md-4', 'mb-3');
 
   const card = document.createElement('div');
   card.classList.add('card');
