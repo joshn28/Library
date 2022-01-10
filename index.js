@@ -44,10 +44,16 @@ Book.prototype.changeReadStatus = function() {
 }
 
 function clearInputs() {
-  document.querySelector('#book-title').value = "";
-  document.querySelector('#author').value = "";
-  document.querySelector('#pages').value = "";
-  document.querySelector('#read-check').checked = false;
+  const title = document.querySelector('#book-title');
+  const author = document.querySelector('#author');
+  const pages = document.querySelector('#pages');
+  const read = document.querySelector('#read-check');
+  title.value = "";
+  author.value = "";
+  pages.value = "";
+  title.classList.remove('border-danger');
+  author.classList.remove('border-danger');
+  pages.classList.remove('border-danger');
 }
 
 function addBookToLibrary() {
@@ -55,10 +61,28 @@ function addBookToLibrary() {
   const author = document.querySelector('#author');
   const pages = document.querySelector('#pages');
   const read = document.querySelector('#read-check');
-  const newBook = new Book(title.value, author.value, pages.value, read.checked);
-  clearInputs();
-  myLibrary.push(newBook);
-  displayBooks();
+  const closeBtn = document.querySelector('#close-modal');
+  if (title.value && author.value && pages.value) {
+    const newBook = new Book(title.value, author.value, pages.value, read.checked);
+    title.classList.remove('border-danger');
+    author.classList.remove('border-danger');
+    pages.classList.remove('border-danger');
+    closeBtn.click();
+    clearInputs();
+    myLibrary.push(newBook);
+    displayBooks();
+  } else {
+    if (!title.value) {
+      title.classList.add('border-danger');
+    }
+    if (!author.value) {
+      author.classList.add('border-danger');
+    }
+    if (!pages.value) {
+      pages.classList.add('border-danger');
+    }
+    alert('Please fill in all the required inputs.')
+  }
 }
 
 function displayBooks() {
