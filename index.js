@@ -43,16 +43,20 @@ Book.prototype.changeReadStatus = function() {
   this.read = !this.read;
 }
 
+function clearInputs() {
+  document.querySelector('#book-title').value = "";
+  document.querySelector('#author').value = "";
+  document.querySelector('#pages').value = "";
+  document.querySelector('#read-check').checked = false;
+}
+
 function addBookToLibrary() {
   const title = document.querySelector('#book-title');
   const author = document.querySelector('#author');
   const pages = document.querySelector('#pages');
   const read = document.querySelector('#read-check');
   const newBook = new Book(title.value, author.value, pages.value, read.checked);
-  title.value = "";
-  author.value = "";
-  pages.value = "";
-  read.checked = false;
+  clearInputs();
   myLibrary.push(newBook);
   displayBooks();
 }
@@ -113,27 +117,35 @@ function card(book) {
   const btnDiv = document.createElement('div');
   btnDiv.classList.add('text-right');
 
-  const infoBtn = document.createElement('button');
-  infoBtn.classList.add('btn', 'mr-2');
+  const statusBtn = document.createElement('button');
+  statusBtn.classList.add('btn', 'mr-2');
   if (book.read == "not read yet") {
-    infoBtn.classList.add('btn-success');
+    statusBtn.classList.add('btn-secondary');
+    statusBtn.textContent = 'Read';
   } else {
-    infoBtn.classList.add('btn-secondary');
+    statusBtn.classList.add('btn-success');
+    statusBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </svg> Read `;
   }
-  infoBtn.setAttribute('data-index', bookIndex);
-  infoBtn.textContent = book.read == "not read yet" ? "Change to read" : "Change to not read";
-  infoBtn.addEventListener('click', (e) => {
+  statusBtn.setAttribute('data-index', bookIndex);
+  statusBtn.addEventListener('click', (e) => {
     const bookInfo = document.querySelector(`p[data-index="${e.currentTarget.dataset.index}"]`);
-    if (e.currentTarget.textContent == "Change to not read") {
+    if (e.currentTarget.classList.contains('btn-success')) {
       bookInfo.textContent = bookInfo.textContent.replace('read', 'not read yet');
-      e.currentTarget.classList.remove('btn-secondary');
-      e.currentTarget.classList.add('btn-success');
-      e.currentTarget.textContent = "Change to read";
-    } else {
-      bookInfo.textContent = bookInfo.textContent.replace('not read yet', 'read');
       e.currentTarget.classList.remove('btn-success');
       e.currentTarget.classList.add('btn-secondary');
-      e.currentTarget.textContent = "Change to not read";
+      e.currentTarget.textContent = "Read";
+      myLibrary[e.currentTarget.dataset.index-1].read = "not read yet"; 
+    } else {
+      bookInfo.textContent = bookInfo.textContent.replace('not read yet', 'read');
+      e.currentTarget.classList.remove('btn-secondary');
+      e.currentTarget.classList.add('btn-success');
+      e.currentTarget.textContent = "";
+      e.currentTarget.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+    </svg> Read `;
+      myLibrary[e.currentTarget.dataset.index-1].read = "read"; 
     }
   });
 
@@ -161,7 +173,7 @@ function card(book) {
     displayBooks();
   });
 
-  btnDiv.append(infoBtn);
+  btnDiv.append(statusBtn);
   btnDiv.append(deleteBtn);
 
   cardBody.append(title);
