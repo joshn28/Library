@@ -51,6 +51,7 @@ function clearInputs() {
   title.value = "";
   author.value = "";
   pages.value = "";
+  read.checked = false;
   title.classList.remove('border-danger');
   author.classList.remove('border-danger');
   pages.classList.remove('border-danger');
