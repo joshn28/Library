@@ -8,11 +8,11 @@ class Library {
   }
 
   addBook = (bk) => {
-      this.books.append(bk);
+      this.books.push(bk);
   }
 
-  removeBook = (bk, i) => {
-      this.books.splice(i, 1, bk);
+  removeBook = (i) => {
+      this.books.splice(i, 1);
   }
 
   getBook = (i) => {
@@ -34,7 +34,7 @@ class Book {
   }
 }
 
-let myLibrary = [];
+let myLibrary = new Library();
 let rowNumber = 0;
 let bookIndex = 1;
 let i = 0
@@ -65,19 +65,19 @@ function onlyNumbers(e) {
   }
 }
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read ? "read" : "not read yet";
-  this.info = function() {
-      return `${this.pages} pages`;
-  }
-}
+// function Book(title, author, pages, read) {
+//   this.title = title;
+//   this.author = author;
+//   this.pages = pages;
+//   this.read = read ? "read" : "not read yet";
+//   this.info = function() {
+//       return `${this.pages} pages`;
+//   }
+// }
 
-Book.prototype.changeReadStatus = function() {
-  this.read = !this.read;
-}
+// Book.prototype.changeReadStatus = function() {
+//   this.read = !this.read;
+// }
 
 function clearInputs() {
   const title = document.querySelector('#book-title');
@@ -99,15 +99,19 @@ function addBookToLibrary() {
   const pages = document.querySelector('#pages');
   const read = document.querySelector('#read-check');
   const closeBtn = document.querySelector('#close-modal');
+
   if (title.value && author.value && pages.value) {
     const newBook = new Book(title.value, author.value, pages.value, read.checked);
+
     title.classList.remove('border-danger');
     author.classList.remove('border-danger');
     pages.classList.remove('border-danger');
+
     closeBtn.click();
     clearInputs();
-    myLibrary.push(newBook);
+    myLibrary.addBook(newBook);
     displayBooks();
+
   } else {
     if (!title.value) {
       title.classList.add('border-danger');
@@ -123,16 +127,16 @@ function addBookToLibrary() {
 }
 
 function displayBooks() {
-  for (; i < myLibrary.length; i++) {
+  for (; i < myLibrary.allBooks.length; i++) {
     for (; rowNumber < rows.length; ) {
       if (rows[rowNumber].childNodes.length - countTextNodes(rows[rowNumber].childNodes) < 3) {
-        rows[rowNumber].append(card(myLibrary[i]));
+        rows[rowNumber].append(card(myLibrary.getBook(i)));
         break;
       } else {
         rowNumber++;
         const row = document.createElement('div');
         row.classList.add('row', 'top-buffer');
-        row.append(card(myLibrary[i]));
+        row.append(card(myLibrary.getBook(i)));
         container.append(row);
         rows = document.querySelectorAll('.top-buffer');
         break;
@@ -173,7 +177,7 @@ function card(book) {
   const info = document.createElement('p');
   info.classList.add('card-text');
   info.setAttribute('data-index', bookIndex);
-  info.textContent = book.info();
+  info.textContent = book.numberOfPages;
 
   const btnDiv = document.createElement('div');
   btnDiv.classList.add('text-right');
@@ -197,7 +201,7 @@ function card(book) {
       e.currentTarget.classList.remove('btn-success');
       e.currentTarget.classList.add('btn-secondary');
       e.currentTarget.textContent = "Read";
-      myLibrary[e.currentTarget.dataset.index-1].read = "not read yet"; 
+      myLibrary.getBook(e.currentTarget.dataset.index-1).read = "not read yet"; 
     } else {
       bookInfo.textContent = bookInfo.textContent.replace('not read yet', 'read');
       e.currentTarget.classList.remove('btn-secondary');
@@ -206,7 +210,7 @@ function card(book) {
       e.currentTarget.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
       <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
     </svg> Read `;
-      myLibrary[e.currentTarget.dataset.index-1].read = "read"; 
+    myLibrary.getBook(e.currentTarget.dataset.index-1).read = "read"; 
     }
   });
 
@@ -215,7 +219,7 @@ function card(book) {
   deleteBtn.setAttribute('data-index', bookIndex);
   deleteBtn.textContent = "Delete";
   deleteBtn.addEventListener('click', (e) => {
-    myLibrary.splice(e.currentTarget.dataset.index-1, 1);
+    myLibrary.removeBook(e.currentTarget.dataset.index-1);
     const book = document.querySelector(`div[data-index="${e.currentTarget.dataset.index}"]`);
     book.parentNode.removeChild(book);
     
